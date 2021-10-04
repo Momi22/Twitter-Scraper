@@ -4,12 +4,13 @@ module TwitterService
   class TwitterRequest
     def request(topic)
       Timeout.timeout(10) do
+        tweet_data = {}
         client = set_information
         client.search(topic, result_type: 'recent').take(1).collect do |tweet|
           tweet_data = { ref_id: tweet.id, text: tweet.text, screen_name: tweet.user.screen_name }
-
-          { status: 1, data: tweet_data }
         end
+
+        { status: 1, data: tweet_data }
       end
     rescue Timeout::Error
       { status: 0 }

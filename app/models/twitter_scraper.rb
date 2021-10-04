@@ -20,14 +20,14 @@ class TwitterScraper < ApplicationRecord
     end
 
     def build_scraper_record(hash = {})
-      return if hash.empty?
+      return if hash[:data].empty?
 
-      twitter_scraper = TwitterScraper.find_or_initialize_by(ref_id: hash[:ref_id])
+      twitter_scraper = TwitterScraper.find_or_initialize_by(ref_id: hash[:data][:ref_id])
 
       return unless twitter_scraper.id.nil?
 
-      twitter_scraper.text = hash[:text]
-      twitter_scraper.screen_name = hash[:screen_name]
+      twitter_scraper.text = hash[:data][:text]
+      twitter_scraper.screen_name = hash[:data][:screen_name]
       twitter_scraper.save
     end
   end
