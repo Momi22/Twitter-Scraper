@@ -34,7 +34,7 @@ class Limitation < ActiveRecord::Base
     resend_at.nil? || (maximum_resend.positive? && resend_at >= 30.minutes.ago) || resend_at < 30.minutes.ago
   end
 
-  def expired_token?
+  def expired?
     (!resend_at.nil? && resend_at <= 30.minutes.ago)
   end
 
