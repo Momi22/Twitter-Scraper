@@ -3,18 +3,16 @@
 module TwitterService
   class TwitterRequest
     def request(topic)
-      client = set_information
-      client.search(topic, result_type: 'recent').take(1).collect do |tweet|
-        twitter_scraper = TwitterScraper.find_or_initialize_by(ref_id: tweet.id)
+      Timeout.timeout(10) do
+        client = set_information
+        client.search(topic, result_type: 'recent').take(1).collect do |tweet|
+          tweet_data = { ref_id: tweet.id, text: tweet.text, screen_name: tweet.user.screen_name }
 
-        next unless twitter_scraper.id.nil?
-
-        twitter_scraper.text = tweet.text
-        twitter_scraper.screen_name = tweet.user.screen_name
-        twitter_scraper.save
+          { status: 1, data: tweet_data }
+        end
       end
-
-      { status: 1 }
+    rescue Timeout::Error
+      { status: 0 }
     rescue StandardError
       { status: 0 }
     end
