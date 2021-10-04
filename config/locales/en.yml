@@ -31,3 +31,8 @@
 
 en:
   hello: "Hello world"
+  controller:
+     cant_process_request: "Your request can't be process"
+     exceed_try: "Max limit try exceeds"
+     unknown_error: "Something went wrong"
+     successful_done: "Successful Done"
